@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerbaJama | El poder de los Andes, sin el amargor</title>
+    <meta name="description" content="HerbaJama es un Ice Tea funcional 100% natural, cero azúcar y cero calorías.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de colores oficiales -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: {
+                            DEFAULT: '#2c5f2d',
+                            light: '#3a7a3b',
+                            dark: '#1e421f'
+                        },
+                        brandRed: {
+                            DEFAULT: '#97151e',
+                            light: '#b51c27',
+                            dark: '#6e0e15'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        section { scroll-margin-top: 5rem; }
+        
+        /* Animaciones base */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Clases para el modal (Pop-up) */
+        .modal-open { overflow: hidden; } /* Evita que el fondo haga scroll */
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-50 selection:bg-brandGreen selection:text-white">
+
+    <!-- Navegación Fija -->
+    <nav class="fixed w-full z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#inicio" class="flex items-center gap-2">
+                    <i class="fa-solid fa-leaf text-brandGreen text-2xl"></i>
+                    <span class="text-2xl font-extrabold text-brandGreen tracking-tight">HERBA<span class="text-brandRed">JAMA</span></span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-gray-600 hover:text-brandGreen font-semibold transition">Inicio</a>
+                    <a href="#formula" class="text-gray-600 hover:text-brandGreen font-semibold transition">Fórmula</a>
+                    <a href="#club" class="text-brandRed hover:text-brandRed-dark font-bold transition">Club HerbaJama <i class="fa-solid fa-star text-xs"></i></a>
+                    <a href="#impacto" class="text-gray-600 hover:text-brandGreen font-semibold transition">Impacto (ODS)</a>
+                    <a href="https://wa.me/51939640207?text=¡Hola!%20Quiero%20realizar%20un%20pedido%20de%20HerbaJama🌸" target="_blank" class="bg-brandGreen hover:bg-brandGreen-light text-white px-5 py-2 rounded-full font-bold transition shadow-md flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Pedir
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-brandGreen focus:outline-none">
+                        <i class="fa-solid fa-bars text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full left-0">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="#inicio" onclick="toggleMobileMenu()" class="block px-3 py-3 font-semibold text-gray-700 hover:bg-gray-50 rounded-lg">Inicio</a>
+                <a href="#formula" onclick="toggleMobileMenu()" class="block px-3 py-3 font-semibold text-gray-700 hover:bg-gray-50 rounded-lg">Fórmula</a>
+                <a href="#club" onclick="toggleMobileMenu()" class="block px-3 py-3 font-bold text-brandRed hover:bg-red-50 rounded-lg">Club HerbaJama</a>
+                <a href="#impacto" onclick="toggleMobileMenu()" class="block px-3 py-3 font-semibold text-gray-700 hover:bg-gray-50 rounded-lg">Impacto (ODS)</a>
+                <a href="https://wa.me/51939640207?text=¡Hola!%20Quiero%20realizar%20un%20pedido%20de%20HerbaJama🌸" target="_blank" class="mt-4 block text-center bg-brandGreen text-white px-5 py-3 rounded-xl font-bold flex justify-center items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Pedir por WhatsApp
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section id="inicio" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-50 to-white -z-10"></div>
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-brandGreen/5 rounded-full blur-3xl -z-10"></div>
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            
+            <div class="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left fade-in-up">
+                <h1 class="text-5xl lg:text-7xl font-black text-gray-900 leading-tight mb-4 tracking-tight">
+                    Herba<span class="text-brandRed">Jama</span>
+                </h1>
+                <h2 class="text-2xl lg:text-3xl font-semibold text-brandGreen mb-6">
+                    El poder de los Andes, sin el amargor.
+                </h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-lg">
+                    El primer <strong>Ice Tea funcional</strong> que fusiona la purificación del hercampuri con la frescura de la flor de jamaica. Saludable, delicioso y listo para tomar.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <a href="https://wa.me/51939640207?text=¡Hola!%20Quiero%20realizar%20un%20pedido%20de%20HerbaJama🌸" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white text-lg font-bold py-4 px-8 rounded-2xl shadow-xl transition-all transform hover:-translate-y-1">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        Pedir ahora - S/ 3.50
+                    </a>
+                </div>
+            </div>
+
+            <!-- FOTO REAL DE LA BOTELLA (Reemplaza el mockup anterior) -->
+            <div class="w-full md:w-1/2 flex justify-center fade-in-up delay-100">
+                <div class="relative px-8">
+                    <!-- 
+                        ¡ATENCIÓN EQUIPO! 
+                        Reemplacen el enlace de 'src' por el nombre de la foto de su botella real.
+                        Ejemplo: src="botella-herbajama.png" 
+                        Asegúrense de que la foto tenga fondo transparente (PNG) para un mejor efecto, o un fondo limpio.
+                    -->
+                    <img src="Botella HerbaJama de té frío.png" alt="Botella HerbaJama" class="max-w-[220px] md:max-w-[280px] h-auto drop-shadow-2xl rounded-3xl transform rotate-2 hover:rotate-0 transition duration-500">
+                    
+                    <!-- Etiqueta Flotante 1: Octógonos -->
+                    <div class="absolute -top-4 -right-4 md:-right-10 bg-brandRed text-white font-bold py-2 px-4 rounded-full shadow-lg transform rotate-6 flex items-center gap-2 border-2 border-white text-sm md:text-base z-10">
+                        <i class="fa-solid fa-check-circle"></i> ¡Libre de Octógonos!
+                    </div>
+                    
+                    <!-- Etiqueta Flotante 2: Natural -->
+                    <div class="absolute bottom-10 -left-6 md:-left-12 bg-white text-brandGreen font-black py-2 px-5 rounded-2xl shadow-xl transform -rotate-6 border border-gray-100 flex items-center gap-2 text-sm md:text-base z-10">
+                        <i class="fa-solid fa-leaf text-brandGreen"></i> 100% Natural
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Beneficios Rápidos (Grid de 3) -->
+    <section class="py-16 bg-brandGreen text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center fade-in-up">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-3xl mb-4 backdrop-blur-sm">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <h3 class="font-bold text-xl">0% Azúcar</h3>
+                    <p class="text-sm text-green-100 mt-2">Sin añadidos artificiales</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-3xl mb-4 backdrop-blur-sm">
+                        <i class="fa-solid fa-fire-burner"></i>
+                    </div>
+                    <h3 class="font-bold text-xl">0% Calorías</h3>
+                    <p class="text-sm text-green-100 mt-2">Bebida ligera y funcional</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-3xl mb-4 backdrop-blur-sm">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <h3 class="font-bold text-xl">100% Natural</h3>
+                    <p class="text-sm text-green-100 mt-2">Extractos botánicos reales</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. La Fórmula (Tarjetas Clickeables) -->
+    <section id="formula" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <span class="text-brandRed font-bold tracking-wider uppercase text-sm">El Secreto Botánico</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">Nuestra Fórmula</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Haz clic en cada ingrediente para descubrir sus propiedades y por qué HerbaJama es único en el mercado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Hercampuri Card -->
+                <div onclick="openModal('modal-hercampuri')" class="cursor-pointer bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:border-brandGreen transition duration-300 transform hover:-translate-y-2 fade-in-up group text-center relative overflow-hidden">
+                    <div class="w-20 h-20 mx-auto bg-brandGreen/10 text-brandGreen rounded-full flex items-center justify-center text-4xl mb-6 group-hover:bg-brandGreen group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Hercampuri</h3>
+                    <p class="text-gray-500 text-sm mb-4">El desintoxicante milenario.</p>
+                    <span class="text-brandGreen font-semibold text-sm flex items-center justify-center gap-2">
+                        Ver detalles <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+
+                <!-- Flor de Jamaica Card -->
+                <div onclick="openModal('modal-jamaica')" class="cursor-pointer bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:border-brandRed transition duration-300 transform hover:-translate-y-2 fade-in-up delay-100 group text-center">
+                    <div class="w-20 h-20 mx-auto bg-brandRed/10 text-brandRed rounded-full flex items-center justify-center text-4xl mb-6 group-hover:bg-brandRed group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Flor de Jamaica</h3>
+                    <p class="text-gray-500 text-sm mb-4">Refrescante y antioxidante.</p>
+                    <span class="text-brandRed font-semibold text-sm flex items-center justify-center gap-2">
+                        Ver detalles <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+
+                <!-- Stevia Card -->
+                <div onclick="openModal('modal-stevia')" class="cursor-pointer bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:border-yellow-500 transition duration-300 transform hover:-translate-y-2 fade-in-up delay-200 group text-center">
+                    <div class="w-20 h-20 mx-auto bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-4xl mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Stevia Natural</h3>
+                    <p class="text-gray-500 text-sm mb-4">El dulzor perfecto, sin culpa.</p>
+                    <span class="text-yellow-600 font-semibold text-sm flex items-center justify-center gap-2">
+                        Ver detalles <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Club HerbaJama (Sistema de Recompensas) -->
+    <section id="club" class="py-20 bg-brandGreen/5 border-y border-brandGreen/20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 fade-in-up">
+                <div class="inline-block bg-brandRed text-white px-4 py-1 rounded-full text-sm font-bold tracking-wider uppercase mb-4 shadow-md">
+                    <i class="fa-solid fa-gift mr-1"></i> Beneficios Exclusivos
+                </div>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Club HerbaJama</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Porque cuidar tu salud y el planeta debe tener recompensa. Disfruta nuestros beneficios comprando por WhatsApp.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Recompensa 1 -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-brandGreen fade-in-up relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-gray-50 opacity-50 text-9xl z-0"><i class="fa-solid fa-award"></i></div>
+                    <div class="relative z-10">
+                        <div class="text-brandGreen text-3xl mb-4"><i class="fa-solid fa-ticket"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Cliente Frecuente</h3>
+                        <p class="text-gray-600 mb-4">Llevamos la cuenta por ti en nuestro sistema de WhatsApp. Acumula 7 botellas en tu historial y <strong>la 8va botella va por nuestra cuenta</strong>.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fa-solid fa-check text-brandGreen mr-1"></i> Automático con tu número.</li>
+                            <li><i class="fa-solid fa-check text-brandGreen mr-1"></i> Sin tarjetas físicas que perder.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Recompensa 2 (ODS 12) -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-[#25D366] fade-in-up delay-100 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-gray-50 opacity-50 text-9xl z-0"><i class="fa-solid fa-recycle"></i></div>
+                    <div class="relative z-10">
+                        <div class="text-[#25D366] text-3xl mb-4"><i class="fa-solid fa-recycle"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Reto Eco-Jama</h3>
+                        <p class="text-gray-600 mb-4">Ayúdanos a cuidar el medio ambiente. Junta <strong>5 envases vacíos y aplastados</strong>, entrégalos en tu próximo pedido y llévate <strong>1 botella helada gratis</strong>.</p>
+                        <div class="bg-green-50 text-green-800 text-xs font-bold px-3 py-2 rounded-lg inline-block">
+                            Apoya el ODS 12 de la ONU <i class="fa-solid fa-globe"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recompensa 3 (Antifraude) -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border-t-4 border-brandRed fade-in-up delay-200 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-gray-50 opacity-50 text-9xl z-0"><i class="fa-solid fa-camera"></i></div>
+                    <div class="relative z-10">
+                        <div class="text-brandRed text-3xl mb-4"><i class="fa-solid fa-camera-retro"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Sorpresa de Compra</h3>
+                        <p class="text-gray-600 mb-4">¿Terminaste tu botella? Aplástala, tómale una foto y envíala a nuestro WhatsApp. Ganarás <strong>delivery gratis o descuentos</strong> en tu próximo Six-Pack.</p>
+                        <ul class="text-sm text-gray-500 space-y-1">
+                            <li><i class="fa-solid fa-check text-brandRed mr-1"></i> Válido 1 vez por número.</li>
+                         <!--  <li><i class="fa-solid fa-check text-brandRed mr-1"></i> La botella debe estar aplastada.</li>--> 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Sobre Nosotros (Validación de Mercado) -->
+    <section id="nosotros" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2 fade-in-up relative">
+                <!-- 
+                    ¡ATENCIÓN EQUIPO! 
+                    Reemplacen este 'src' por el nombre de la foto grupal de ustedes.
+                    Ejemplo: src="equipo-herbajama.jpg" 
+                -->
+                <img src="integra.jpeg" alt="Equipo HerbaJama" class="rounded-3xl shadow-xl w-full object-cover h-80 border-4 border-gray-50 relative z-10">
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-brandGreen/10 rounded-full blur-2xl z-0"></div>
+            </div>
+            <div class="w-full md:w-1/2 fade-in-up delay-100">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6">Nuestra Historia en Trujillo</h2>
+                <p class="text-gray-600 mb-4 text-lg">
+                    Somos un equipo de estudiantes de la Universidad Privada del Norte (UPN) con la meta de revolucionar lo que bebemos a diario. Todo comenzó cuando notamos que las opciones para refrescarse en Trujillo siempre terminaban en gaseosas azucaradas o en infusiones medicinales tan amargas que nadie quería tomarlas, debido a eso decidimos cambiar esa realidad y así nació HerbaJama.
+                </p>
+                <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-brandRed shadow-sm mt-6 flex gap-4 items-start">
+                    <div class="text-brandRed text-4xl mt-1"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div>
+                        <h4 class="font-bold text-xl text-gray-900">Validado en el Mercado</h4>
+                        <p class="text-gray-600 text-sm mt-1">Nuestra fórmula final fue probada rigurosamente, obteniendo un <strong class="text-brandGreen text-base">96% de aceptación</strong> en estudios de mercado con consumidores trujillanos. Es el sabor, sin el sacrificio.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Impacto (ODS) -->
+    <section id="impacto" class="py-20 bg-gray-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-brandGreen/10"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Emprendimiento con Impacto</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Alineados con la Agenda 2030 de la ONU (Objetivos de Desarrollo Sostenible).</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- ODS 12 -->
+                <div class="bg-gray-800/50 backdrop-blur border border-gray-700 p-8 rounded-3xl text-center fade-in-up">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-lg flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg">12</div>
+                    <h3 class="text-xl font-bold mb-3 text-yellow-500">Consumo Responsable</h3>
+                    <p class="text-gray-400 text-sm">Fomentamos la salud sin azúcar y operamos el 'Reto Eco-Jama' para reciclar nuestros envases PET.</p>
+                </div>
+                
+                <!-- ODS 9 -->
+                <div class="bg-gray-800/50 backdrop-blur border border-gray-700 p-8 rounded-3xl text-center fade-in-up delay-100">
+                    <div class="w-16 h-16 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg">9</div>
+                    <h3 class="text-xl font-bold mb-3 text-orange-500">Innovación (QR)</h3>
+                    <p class="text-gray-400 text-sm">Etiqueta inteligente que conecta el producto físico con nuestra plataforma digital y embudo automatizado.</p>
+                </div>
+
+                <!-- ODS 8 -->
+                <div class="bg-gray-800/50 backdrop-blur border border-gray-700 p-8 rounded-3xl text-center fade-in-up delay-200">
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg">8</div>
+                    <h3 class="text-xl font-bold mb-3 text-red-500">Desarrollo Local</h3>
+                    <p class="text-gray-400 text-sm">Dinamizamos la economía trujillana empoderando a bodegas locales como nuestros socios estratégicos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-10 text-gray-400 text-center md:text-left">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-leaf text-brandGreen text-xl"></i>
+                <span class="text-xl font-bold text-white tracking-tight">HERBA<span class="text-brandRed">JAMA</span></span>
+            </div>
+            <div class="text-sm">
+                &copy; 2026 HerbaJama - Proyecto Final Expoinnova.<br>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ============================================== -->
+    <!-- ZONA DE MODALES (VENTANAS EMERGENTES) JS       -->
+    <!-- ============================================== -->
+
+    <!-- Backdrop General para oscurecer el fondo -->
+    <div id="modal-backdrop" class="modal-overlay fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onclick="closeAllModals()"></div>
+
+    <!-- 1. Modal Hercampuri -->
+    <div id="modal-hercampuri" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none">
+        <div class="modal-content bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden pointer-events-auto">
+            <div class="bg-brandGreen text-white p-6 relative">
+                <button onclick="closeModal('modal-hercampuri')" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">Hercampuri</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-brandGreen"></i> Trazabilidad y Origen</h4>
+                    <p class="text-gray-600 text-sm mt-1">Cultivado biológicamente en los Andes peruanos. Apoyamos la agricultura local y sostenible asegurando un insumo de calidad premium (ODS 8).</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-bolt text-brandGreen"></i> Mito vs. Realidad</h4>
+                    <p class="text-gray-600 text-sm mt-1"><strong>¿Lo sano siempre sabe mal?</strong> Falso. A través de nuestra infusión controlada, extraemos únicamente el principio activo desintoxicante y evitamos liberar el 100% de los taninos amargos que arruinan la experiencia.</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                    <h4 class="font-bold text-brandGreen text-lg flex items-center gap-2"><i class="fa-solid fa-stethoscope text-brandGreen"></i> Perfil Funcional</h4>
+                    <p class="text-green-800 text-sm mt-1">Actúa como un potente desintoxicante hepático y metabolizador natural de grasas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Modal Jamaica -->
+    <div id="modal-jamaica" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none">
+        <div class="modal-content bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden pointer-events-auto">
+            <div class="bg-brandRed text-white p-6 relative">
+                <button onclick="closeModal('modal-jamaica')" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">Flor de Jamaica</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-seedling text-brandRed"></i> Origen Seleccionado</h4>
+                    <p class="text-gray-600 text-sm mt-1">Utilizamos cálices de hibisco de cultivos orgánicos seleccionados para garantizar la mayor concentración de pigmentos naturales y vitaminas.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-mug-hot text-brandRed"></i> Notas de Cata</h4>
+                    <p class="text-gray-600 text-sm mt-1">Aporta notas ácidas y refrescantes que equilibran la bebida. Es la responsable de otorgarle a HerbaJama ese color <strong>rojo rubí brillante 100% natural</strong>, sin usar tartrazina ni colorantes artificiales.</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                    <h4 class="font-bold text-brandRed text-lg flex items-center gap-2"><i class="fa-solid fa-shield-heart text-brandRed"></i> Perfil Funcional</h4>
+                    <p class="text-red-800 text-sm mt-1">Alto poder antioxidante (rico en vitamina C) y un efectivo diurético natural que combate la retención de líquidos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Modal Stevia -->
+    <div id="modal-stevia" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none">
+        <div class="modal-content bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden pointer-events-auto">
+            <div class="bg-yellow-500 text-white p-6 relative">
+                <button onclick="closeModal('modal-stevia')" class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold">Stevia Natural</h3>
+                </div>
+            </div>
+            <div class="p-6 space-y-6">
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-plant-wilt text-yellow-600"></i> Origen Botánico</h4>
+                    <p class="text-gray-600 text-sm mt-1">Extraída directamente de la hoja de stevia. Un endulzante 100% vegetal que evita los procesos químicos y dañinos del azúcar blanco refinado.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 text-lg flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-yellow-600"></i> El Dulzor Perfecto</h4>
+                    <p class="text-gray-600 text-sm mt-1">Agregada en la medida exacta, su función en la receta es cortar la acidez intensa de la jamaica y neutralizar los últimos rastros herbáceos del hercampuri sin dejar regusto metálico.</p>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-100">
+                    <h4 class="font-bold text-yellow-700 text-lg flex items-center gap-2"><i class="fa-solid fa-heart-pulse text-yellow-600"></i> Perfil Funcional</h4>
+                    <p class="text-yellow-800 text-sm mt-1">Índice glucémico nulo. Genera <strong>0 picos de glucosa en la sangre</strong>, haciendo a HerbaJama una bebida totalmente apta para personas diabéticas o en déficit calórico.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Interacción -->
+    <script>
+        // Lógica del Menú Móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Lógica de Modales (Pop-ups)
+        const backdrop = document.getElementById('modal-backdrop');
+        
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            backdrop.classList.add('active');
+            modal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            backdrop.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal-overlay[id^="modal-"]');
+            modals.forEach(m => m.classList.remove('active'));
+            backdrop.classList.remove('active');
+            document.body.classList.remove('modal-open');
+        }
+
+        // Animaciones al hacer scroll
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in-up').forEach((el) => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
